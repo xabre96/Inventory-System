@@ -41,10 +41,7 @@ public class Model extends Database {
         this.rs = this.pst.executeQuery();
 
         while (rs.next()) {
-            System.out.print(rs.getInt("user_id"));
-            System.out.print(": ");
-            System.out.print(rs.getString("user"));
-            System.out.println(rs.getString("pass"));
+            System.out.println(rs.getInt("user_id")+": "+""+rs.getString("user")+" "+rs.getString("pass"));
         }
         this.closePst();
         this.closeConn();
