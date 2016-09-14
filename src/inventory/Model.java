@@ -39,10 +39,25 @@ public class Model extends Database {
         this.openConn();
         this.pst = this.con.prepareStatement("SELECT * FROM user");
         this.rs = this.pst.executeQuery();
-
         while (rs.next()) {
             System.out.println(rs.getInt("user_id")+": "+""+rs.getString("user")+" "+rs.getString("pass"));
         }
+        this.closePst();
+        this.closeConn();
+    }
+    
+    protected void updateUser() throws SQLException {
+        this.openConn();
+        this.pst = this.con.prepareStatement("UPDATE user SET user = 'ali', pass = '321' WHERE user_id = 2");
+        this.pst.executeUpdate();
+        this.closePst();
+        this.closeConn();
+    }
+    
+    protected void deleteUser() throws SQLException {
+        this.openConn();
+        this.pst = this.con.prepareStatement("DELETE FROM user WHERE user_id = 2");
+        this.pst.executeUpdate();
         this.closePst();
         this.closeConn();
     }
