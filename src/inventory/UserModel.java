@@ -9,7 +9,7 @@ public class UserModel extends Database {
         
     }
     
-    protected void checkUser(String[] values) throws SQLException {
+    protected int checkUser(String[] values) throws SQLException {
         this.openConn();
         this.pst = this.con.prepareStatement("SELECT * FROM user WHERE user='"+values[0]+"' AND pass='"+values[1]+"'");
         this.rs = this.pst.executeQuery();
@@ -17,9 +17,10 @@ public class UserModel extends Database {
         while (rs.next()) {
             count++;
         }
-        System.out.println(count);
         this.closeRs();
         this.closePst();
         this.closeConn();
+        
+        return count;
     }
 }

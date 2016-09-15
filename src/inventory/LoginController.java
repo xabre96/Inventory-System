@@ -14,12 +14,16 @@ public class LoginController {
     
     protected boolean authentication(String[] values){
         UserModel um = new UserModel();
-        
+        boolean r = false;
         try {
-            um.checkUser(values);
+            int count = um.checkUser(values);
+            if(count==1){
+                r = true;
+            }else{
+            }
         } catch (SQLException ex) {
             Logger.getLogger(LoginController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return r;
     }
 }
