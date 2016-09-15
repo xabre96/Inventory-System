@@ -1,8 +1,6 @@
 package inventory;
 
 import java.sql.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class Model extends Database {
 
@@ -10,32 +8,7 @@ public class Model extends Database {
 
     }
 
-    protected void getVersion() {
-        this.openConn();
-        this.setSt();
-        this.execute("SELECT VERSION()");
-        try {
-            if (this.rs.next()) {
-                System.out.println(rs.getString(1));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    protected void insertUser() throws SQLException {
-        String user = "xan";
-        String pass = "123";
-        this.openConn();
-        this.prepare("INSERT INTO User(user, pass) VALUES(?, ?)");
-        this.pst.setString(1, user);
-        this.pst.setString(2, pass);
-        this.execute();
-        this.closePst();
-        this.closeConn();
-    }
-
-    protected void selectUser() throws SQLException {
+    protected void selectUsers() throws SQLException {
         this.openConn();
         this.pst = this.con.prepareStatement("SELECT * FROM user");
         this.rs = this.pst.executeQuery();
@@ -46,17 +19,28 @@ public class Model extends Database {
         this.closeConn();
     }
     
-    protected void updateUser() throws SQLException {
+    protected void insertUser(String[] values) throws SQLException {
         this.openConn();
-        this.pst = this.con.prepareStatement("UPDATE user SET user = 'ali', pass = '321' WHERE user_id = 2");
+        this.pst = this.con.prepareStatement("INSERT INTO User(user, pass) VALUES(?, ?)");
+//        this.pst.setString(1, id);
+        this.pst.setString(1, values[0]);
+        this.pst.setString(2, values[1]);
         this.pst.executeUpdate();
         this.closePst();
         this.closeConn();
     }
     
-    protected void deleteUser() throws SQLException {
+    protected void updateUser(String[] values, int id) throws SQLException {
         this.openConn();
-        this.pst = this.con.prepareStatement("DELETE FROM user WHERE user_id = 2");
+        this.pst = this.con.prepareStatement("UPDATE user SET user = '"+values[0]+"', pass = '"+values[1]+"' WHERE user_id = "+id);
+        this.pst.executeUpdate();
+        this.closePst();
+        this.closeConn();
+    }
+    
+    protected void deleteUser(int id) throws SQLException {
+        this.openConn();
+        this.pst = this.con.prepareStatement("DELETE FROM user WHERE user_id = "+id);
         this.pst.executeUpdate();
         this.closePst();
         this.closeConn();
